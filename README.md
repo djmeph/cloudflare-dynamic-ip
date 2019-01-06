@@ -4,11 +4,11 @@ Setup dependencies using `npm install`
 
 ### Sample script to set variables:
 
-`start.sh`:
+`start.sh`
 
 ```
 #!/bin/bash
-export CF_EMAIL='norm.witte@gmail.com'
+export CF_EMAIL='email@example.com'
 export CF_KEY='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 export CF_ZONE_ID='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 export CF_ID='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
