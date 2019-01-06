@@ -12,6 +12,7 @@ const CF_ZONE_ID = process.env.CF_ZONE_ID;
 const CF_ID = process.env.CF_ID;
 const CF_RECORD_TYPE = process.env.CF_RECORD_TYPE;
 const CF_DOMAIN = process.env.CF_DOMAIN;
+const SOME_EXIT_CONDITION = false;
 
 // Import dependencies
 const publicIp = require('public-ip');
@@ -40,8 +41,6 @@ const go = async () => {
       console.log(`IP Address updated to ${publicIP}`);
     }
 
-    process.exit(0);
-
   } catch (err) {
     console.error(err);
     process.exit(1);
@@ -50,3 +49,7 @@ const go = async () => {
 }
 
 go();
+
+(function wait () {
+   if (!SOME_EXIT_CONDITION) setTimeout(wait, 1000);
+})();
