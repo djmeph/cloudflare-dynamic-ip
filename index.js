@@ -31,8 +31,6 @@ const go = async () => {
     const currentIP = record.result.content;
     const publicIP = await publicIp.v4();
 
-    console.log({currentIP, publicIP});
-
     if (currentIP !== publicIP) {
       const response = await cf.dnsRecords.edit(CF_ZONE_ID, CF_ID, {
         content: publicIP,
