@@ -2,67 +2,51 @@
 'use strict';
 
 /**
- * AWS Route 53 Dynamic IP script
+ * Cloudflare Dynamic IP script
  */
 
 // Declare environment variables:
-const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
-const AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
-const ZONE_ID = process.env.ZONE_ID;
-const DOMAIN = process.env.DOMAIN;
-const TTL = process.env.TTL;
-const RECORD_TYPE = "A";
+const CF_EMAIL = process.env.CF_EMAIL;
+const CF_KEY = process.env.CF_KEY;
+const CF_ZONE_ID = process.env.CF_ZONE_ID;
+const CF_ID = process.env.CF_ID;
+const CF_RECORD_TYPE = process.env.CF_RECORD_TYPE;
+const CF_DOMAIN = process.env.CF_DOMAIN;
 
 // Import dependencies
 const publicIp = require('public-ip');
-const Route53 = require('nice-route53');
-const inspect = require('util').inspect;
+const Cloudflare = require('cloudflare');
+const { inspect } = require('util');
 
-// Construct Route53 handler
-const r53 = new Route53({
-  accessKeyId     : AWS_ACCESS_KEY,
-  secretAccessKey : AWS_SECRET_KEY,
-});
+const go = async () => {
 
-// Pull records from hosted zone
-r53.records(ZONE_ID, (err, data) => {
+  try {
 
-  if (err) return fail(err);
+    const cf = new Cloudflare({
+      email: CF_EMAIL,
+      key: CF_KEY
+    });
 
-  // Filter out target record based on domain and record type.
-  var record = data.filter(n => {
-    return n.name == DOMAIN && n.type == RECORD_TYPE;
-  });
+    const record = await cf.dnsRecords.read(CF_ZONE_ID, CF_ID);
+    const currentIP = record.result.content;
+    const publicIP = await publicIp.v4();
 
-  // Set target record IP address as 'currentIP'
-  var currentIP = record.length > 0
-    && record[0].values
-    && record[0].values.length > 0
-    && record[0].values[0];
+    console.log({currentIP, publicIP});
 
-  // Fetch Public IP Address as 'publicIP'
-  publicIp.v4().then(publicIP => {
+    if (currentIP !== publicIP) {
+      const response = await cf.dnsRecords.edit(CF_ZONE_ID, CF_ID, {
+        content: publicIP,
+        type: CF_RECORD_TYPE,
+        name: CF_DOMAIN
+      });
+      console.log(`IP Address updated to ${publicIP}`);
+    }
 
-    //Compare values and upsert record if no match
-    currentIP != publicIP ? r53.upsertRecord({
-      zoneId : ZONE_ID,
-      name   : DOMAIN,
-      type   : RECORD_TYPE,
-      ttl    : TTL,
-      values : [publicIP]
-    }, (err, result) => {
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 
-      if (err) return fail(result);
-      process.exit(); // IP Address successfully updated
-
-    }) : process.exit(); // IP Addresses match
-
-  }, fail);
-
-});
-
-//Errors output to console log
-function fail (err) {
-  console.log(inspect(err, { colors: true, depth: Infinity }));
-  process.exit(1);
 }
+
+go();

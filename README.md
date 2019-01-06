@@ -1,15 +1,18 @@
-## Node.js Dynamic IP Address script for AWS Route 53 Hosted Zones
+## Node.js Dynamic IP Address script for Cloudflare hosted zones
 
-Setup dependencies using `yarn install`
+Setup dependencies using `npm install`
 
 ### Sample script to set variables:
 
+`start.sh`:
+
 ```
 #!/bin/bash
-export AWS_ACCESS_KEY="XXXXXXXXXXXXXXXXXXXX"
-export AWS_SECRET_KEY="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-export ZONE_ID="XXXXXXXXXXXXXX"
-export DOMAIN="example.com"
-export TTL=300
+export CF_EMAIL='norm.witte@gmail.com'
+export CF_KEY='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+export CF_ZONE_ID='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+export CF_ID='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+export CF_RECORD_TYPE='A'
+export CF_DOMAIN='example.com'
 npm start
 ```
