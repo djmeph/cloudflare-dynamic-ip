@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/djmeph/route53-dynamic-ip#readme",
   "dependencies": {
-    "cloudflare": "git+https://git@github.com/cloudflare/node-cloudflare.git",
-    "public-ip": "^2.3.5"
+    "public-ip": "^2.3.5",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   }
 }

@@ -9,35 +9,51 @@
 const CF_EMAIL = process.env.CF_EMAIL;
 const CF_KEY = process.env.CF_KEY;
 const CF_ZONE_ID = process.env.CF_ZONE_ID;
-const CF_ID = process.env.CF_ID;
+const CF_RECORD_ID = process.env.CF_RECORD_ID;
 const CF_RECORD_TYPE = process.env.CF_RECORD_TYPE;
 const CF_DOMAIN = process.env.CF_DOMAIN;
 const SOME_EXIT_CONDITION = false;
 
 // Import dependencies
 const publicIp = require('public-ip');
-const Cloudflare = require('cloudflare');
-const { inspect } = require('util');
+const request = require('request-promise-native');
 
 const go = async () => {
 
   try {
 
-    const cf = new Cloudflare({
-      email: CF_EMAIL,
-      key: CF_KEY
+    const json = await request({
+      method: 'GET',
+      uri: `https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`,
+      headers: {
+        'X-Auth-Email': CF_EMAIL,
+        'X-Auth-Key': CF_KEY,
+        'Content-Type': 'application/json'
+      },
+      json: true
     });
 
-    const record = await cf.dnsRecords.read(CF_ZONE_ID, CF_ID);
-    const currentIP = record.result.content;
+    const currentIP = json.result.content;
     const publicIP = await publicIp.v4();
 
     if (currentIP !== publicIP) {
-      const response = await cf.dnsRecords.edit(CF_ZONE_ID, CF_ID, {
-        content: publicIP,
-        type: CF_RECORD_TYPE,
-        name: CF_DOMAIN
+
+      await request({
+        method: 'PUT',
+        uri: `https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`,
+        headers: {
+          'X-Auth-Email': CF_EMAIL,
+          'X-Auth-Key': CF_KEY,
+          'Content-Type': 'application/json'
+        },
+        json: true,
+        body: {
+          type: 'A',
+          name: CF_DOMAIN,
+          content: publicIP
+        }
       });
+
       console.log(`IP Address updated to ${publicIP}`);
     }
 
