@@ -14,7 +14,7 @@ const go = async () => {
       uri: `https://api.cloudflare.com/client/v4/zones`,
       headers: {
         'X-Auth-Email': CF_EMAIL,
-        'X-Auth-Key': CF_KEY,
+        'Authorization': `Bearer ${CF_KEY}`,
         'Content-Type': 'application/json'
       },
       json: true
