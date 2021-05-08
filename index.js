@@ -27,7 +27,7 @@ const go = async () => {
       uri: `https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`,
       headers: {
         'X-Auth-Email': CF_EMAIL,
-        'X-Auth-Key': CF_KEY,
+        'Authorization': `Bearer ${CF_KEY}`,
         'Content-Type': 'application/json'
       },
       json: true
@@ -43,7 +43,7 @@ const go = async () => {
         uri: `https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`,
         headers: {
           'X-Auth-Email': CF_EMAIL,
-          'X-Auth-Key': CF_KEY,
+          'Authorization': `Bearer ${CF_KEY}`,
           'Content-Type': 'application/json'
         },
         json: true,
