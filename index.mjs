@@ -8,10 +8,11 @@ import publicIp from 'public-ip';
 // Declare environment variables:
 
 const { CF_EMAIL, CF_KEY, CF_ZONE_ID, CF_RECORD_ID, CF_DOMAIN } = process.env;
+const CLOUDFLARE_V4_URI = 'https://api.cloudflare.com/client/v4';
 
 (async () => {
   // Fetch current record
-  const response = await fetch(`https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`, {
+  const response = await fetch(`${CLOUDFLARE_V4_URI}/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`, {
     headers: {
       'X-Auth-Email': CF_EMAIL,
       'Authorization': `Bearer ${CF_KEY}`,
@@ -27,7 +28,7 @@ const { CF_EMAIL, CF_KEY, CF_ZONE_ID, CF_RECORD_ID, CF_DOMAIN } = process.env;
   if (currentIP === publicIP) return;
 
   // Update record
-  await fetch(`https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`, {
+  await fetch(`${CLOUDFLARE_V4_URI}/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID}`, {
     method: 'PUT',
     headers: {
       'X-Auth-Email': CF_EMAIL,
