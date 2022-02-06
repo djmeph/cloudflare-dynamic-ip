@@ -2,24 +2,24 @@
   "name": "route53-dynamic-ip",
   "version": "1.0.0",
   "description": "Node.js Dynamic IP Address script for AWS Route 53 Hosted Zones",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
-    "start": "node index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.mjs",
+    "list-zones": "node list-zones.mjs",
+    "list-records": "node list-records.mjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/djmeph/route53-dynamic-ip.git"
+    "url": "git+https://github.com/djmeph/cloudflare-dynamic-ip.git"
   },
   "author": "DJ Meph",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/djmeph/route53-dynamic-ip/issues"
+    "url": "https://github.com/djmeph/cloudflare-dynamic-ip.git/issues"
   },
-  "homepage": "https://github.com/djmeph/route53-dynamic-ip#readme",
+  "homepage": "https://github.com/djmeph/cloudflare-dynamic-ip.git#readme",
   "dependencies": {
-    "public-ip": "^2.3.5",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
+    "node-fetch": "^3.2.0",
+    "public-ip": "^5.0.0"
   }
 }
