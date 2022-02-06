@@ -7,7 +7,7 @@ import publicIp from 'public-ip';
 
 // Declare environment variables:
 
-const { CF_EMAIL, CF_KEY, CF_ZONE_ID, CF_RECORD_ID, CF_DOMAIN } = process.env;
+const { CF_EMAIL, CF_KEY, CF_ZONE_ID, CF_RECORD_ID, CF_DOMAIN, CF_RECORD_TYPE } = process.env;
 const CLOUDFLARE_V4_URI = 'https://api.cloudflare.com/client/v4';
 
 (async () => {
@@ -36,7 +36,7 @@ const CLOUDFLARE_V4_URI = 'https://api.cloudflare.com/client/v4';
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      type: 'A',
+      type: CF_RECORD_TYPE,
       name: CF_DOMAIN,
       content: publicIP
     })
