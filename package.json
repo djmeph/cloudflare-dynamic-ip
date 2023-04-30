@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/djmeph/cloudflare-dynamic-ip.git#readme",
   "dependencies": {
-    "node-fetch": "^3.2.0",
+    "node-fetch": "^3.2.10",
     "public-ip": "^5.0.0"
   }
 }
